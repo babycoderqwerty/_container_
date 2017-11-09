@@ -15,7 +15,7 @@
       <!-- Assume test is the database name -->
       
       <property name = "hibernate.connection.url">
-         jdbc:postgresql://localhost:5432/titanic          
+         jdbc:postgresql://localhost:5432/activitiREST          
       </property>
       
       <property name = "hibernate.connection.username">

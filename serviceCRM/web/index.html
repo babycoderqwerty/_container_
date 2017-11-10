@@ -5,249 +5,284 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <html>
-    <head>
-        <title>Service CRM</title>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="robots" content="all,follow">
-        <!-- Bootstrap CSS-->
-        <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
-        <!-- Font Awesome CSS-->
-        <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
-        <!-- Custom icon font-->
-        <link rel="stylesheet" href="css/fontastic.css">
-        <!-- Google fonts - Roboto -->
-        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
-        <!-- jQuery Circle-->
-        <link rel="stylesheet" href="css/grasp_mobile_progress_circle-1.0.0.min.css">
-        <!-- Custom Scrollbar-->
-        <link rel="stylesheet" href="vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css">
-        <!-- theme stylesheet-->
-        <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
-        <!-- Custom stylesheet - for your changes-->
-        <link rel="stylesheet" href="css/custom.css">
-        <script type="text/javascript">
+<head>
+  <title>Service CRM</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+  <!-- Bootstrap CSS-->
+  <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
+  <!-- Font Awesome CSS-->
+  <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
+  <!-- Custom icon font-->
+  <link rel="stylesheet" href="css/fontastic.css">
+  <!-- Google fonts - Roboto -->
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+  <!-- jQuery Circle-->
+  <link rel="stylesheet" href="css/grasp_mobile_progress_circle-1.0.0.min.css">
+  <!-- Custom Scrollbar-->
+  <link rel="stylesheet" href="vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css">
+  <!-- theme stylesheet-->
+  <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
+  <!-- Custom stylesheet - for your changes-->
+  <link rel="stylesheet" href="css/custom.css">
+<script type="text/javascript">
 
-        //function get_processList(){
-        //    //console.log("get Process list");
-        //    
-        //    var list = document.getElementById("pages-nav-list");
-        //    var i =1;
-        //     $.ajax({ 
-        //                            
-        //        type: 'GET', 
-        //        url: 'http://localhost:8084/ActivitiBPMDatabaseAPI/process_List/repository/process-definition', 
-        //        dataType: 'json',
-        //        //data : { username : username, password : password, task_id1 : task_id1, assignee_name : assignee_name },
-        //        success: function (data) {
-        //            console.log(data);
-        //            $.each(data, function() {
-        //            //console.log(this['name']);       
-        //            var aTag = document.createElement('a');
-        //            aTag.setAttribute('href',"#");
-        //            //var dateSpan = document.createElement('span');
-        //            //dateSpan.innerHTML = this['name'];
-        //            aTag.innerHTML = this['name'];
-        //            var item = document.createElement('li');
-        //            //aTag.appendChild(dateSpan);
-        //            item.onclick = get_user_task();
-        //            item.id = this['deploymentId'];
-        //            item.appendChild(aTag);
-        //
-        //            // Add it to the list:
-        //            list.appendChild(item);            
-        //             
-        //         });
-        //
-        //      }
-        //  });
-        //}
+  $(document).ready(function () {
+     $.ajax({ 
+                            
+        type: 'GET', 
+        url: 'http://localhost:8084/ActivitiBPMDatabaseAPI/process_List/repository/process-definition', 
+        dataType: 'json',
+        //data : { username : username, password : password, task_id1 : task_id1, assignee_name : assignee_name },
+        success: function (data) {
+            console.log(data);
+            $.each(data, function() {
+            $("#pages-nav-list").append("<li id ="+this['deploymentId']+"><a href=#>"+this['name']+"</a></li>");
+             
+         });
 
-            $(document).ready(function () {
+      }
+  });
+       $("#pages-nav-list").on('click', 'li', function(e){
+               //console.log(this.id);
+               $("#pages-nav-list").attr("class", "list-unstyled collapse");
+               $.ajax({
+                  type: 'GET',
+                  url: 'http://localhost:8084/activiti-rest/service/repository/deployments/'+this.id+'/resourcedata/Pizza.bpmn20.xml',
+                  dataType: 'xml',
+                  success: function(data){
+                       var json_data = xmlToJson(data);
+                       //console.log(json_data);
+                       var count = json_data['definitions']['process']['userTask'].length;
+                       //console.log(count);
+                       
+                       for(var i=0; i<count; i++){
+                           if(json_data['definitions']['process']['userTask'][i].hasOwnProperty('extensionElements')){
+                               
+                               if(json_data['definitions']['process']['userTask'][i]['extensionElements'].hasOwnProperty('activiti:formProperty')){
+                                   
+                                   if(json_data['definitions']['process']['userTask'][i]['@attributes'].hasOwnProperty('activiti:assignee')){
+                                       
+                                       var user_task_id = json_data['definitions']['process']['userTask'][i]['@attributes']['id'];
+                                       var task_name = json_data['definitions']['process']['userTask'][i]['@attributes']['name'];
+                                       var assignee = json_data['definitions']['process']['userTask'][i]['@attributes']['activiti:assignee'];
+                                       
+                                       $("#side-main-menu").append("<li id="+assignee+"><a href=#><span>"+task_name+"</span></a></li>");
+                                       
+                                   }
+                                   else{
+                                        var user_task_id = json_data['definitions']['process']['userTask'][i]['@attributes']['id'];
+                                        var task_name = json_data['definitions']['process']['userTask'][i]['@attributes']['name'];
+                                        var assignee = json_data['definitions']['process']['userTask'][i]['@attributes']['activiti:candidateGroups'];
+                                       
+                                        $("#side-main-menu").append("<li id="+assignee+"><a href=#><span>"+task_name+"</span></a></li>");
+                                   }
+                           
+                                  
+                               }
+                               else{
 
-                alert("Getting process list")
+                                    if(json_data['definitions']['process']['userTask'][i]['@attributes'].hasOwnProperty('activiti:assignee')){
+                                       
+                                    var user_task_id = json_data['definitions']['process']['userTask'][i]['@attributes']['id'];
+                                    var task_name = json_data['definitions']['process']['userTask'][i]['@attributes']['name'];
+                                    var assignee = json_data['definitions']['process']['userTask'][i]['@attributes']['activiti:assignee'];
+                                       
+                                    $("#side-main-menu").append("<li id="+assignee+"><a href=#><span>"+task_name+"</span></a></li>");
+                                       
+                                   }
+                                   else{
+                                        var user_task_id = json_data['definitions']['process']['userTask'][i]['@attributes']['id'];
+                                        var task_name = json_data['definitions']['process']['userTask'][i]['@attributes']['name'];
+                                        var assignee = json_data['definitions']['process']['userTask'][i]['@attributes']['activiti:candidateGroups'];
+                                       
+                                        $("#side-main-menu").append("<li id="+assignee+"><a href=#><span>"+task_name+"</span></a></li>");
+                                   }
+                               }
+                               
+                           }
+                           else{
+                                   
+                                   if(json_data['definitions']['process']['userTask'][i]['@attributes'].hasOwnProperty('activiti:assignee')){
+                                       
+                                       var user_task_id = json_data['definitions']['process']['userTask'][i]['@attributes']['id'];
+                                       var task_name = json_data['definitions']['process']['userTask'][i]['@attributes']['name'];
+                                       var assignee = json_data['definitions']['process']['userTask'][i]['@attributes']['activiti:assignee'];
+                                       
+                                       $("#side-main-menu").append("<li id="+assignee+"><a href=#><span>"+task_name+"</span></a></li>");
+                                       
+                                   }
+                                   else{
+                                        var user_task_id = json_data['definitions']['process']['userTask'][i]['@attributes']['id'];
+                                        var task_name = json_data['definitions']['process']['userTask'][i]['@attributes']['name'];
+                                        var assignee = json_data['definitions']['process']['userTask'][i]['@attributes']['activiti:candidateGroups'];
+                                       
+                                        $("#side-main-menu").append("<li id="+assignee+"><a href=#><span>"+task_name+"</span></a></li>");
+                                   }
+                           }                           
+                       } 
+                  }
+               });
+                $("#side-main-menu").on('click', 'li', function(e){
+                    var role = this.id;
+                    var work = $(this).text();
+                       $.ajax({
+                            type: 'GET', 
+                            url: 'http://localhost:8084/activiti-rest/service/runtime/tasks', 
+                            dataType: 'json',
+                            success: function (data) {
+                                console.log(data);
+                                var task_list = data.data.length;
+                                //console.log(task_list);
+                                 for(var i=0; i<task_list; i++){
+                                     
+                                     if(data.data[i]['name']== work){
+                                         var task_id = data.data[i]['id'];
+                                         
+                                         $.ajax({
+                                            type: 'GET',
+                                            url: 'http://localhost:8084/activiti-rest/service/runtime/tasks/'+task_id+'/identitylinks',
+                                            dataType: 'json',
+                                            success: function(data){
+                                                //console.log(data);
+                                                if(data[0]['group'] == role){
+                                                    //console.log("kscgauzj");
+                                                    $.ajax({
+                                                        type: 'GET',
+                                                        url: 'http://localhost:8084/activiti-rest/service/runtime/tasks/'+task_id+'/variables',
+                                                        dataType: 'json',
+                                                        success: function(data){
+                                                            console.log(data);
+                                                            var customer_name = data[3].value;
+                                                            console.log(customer_name);
 
-                var list = document.getElementById("pages-nav-list");
-                var activiti_list = document.getElementById("side-main-menu");
-                $.ajax({
-                    type: 'GET',
-                    //url: 'http://localhost:8087/ActivitiBPMDatabaseAPI/process_List/repository/process-definition', 
-                    url: '/process_List/repository/process-definition',
-                    dataType: 'json',
-                    //data : { username : username, password : password, task_id1 : task_id1, assignee_name : assignee_name },
-                    success: function (data) {
-                        console.log(data);
-                        $.each(data, function () {
-                            //console.log(this['name']);       
-                            var aTag = document.createElement('a');
-                            aTag.setAttribute('href', "#");
-                            //var dateSpan = document.createElement('span');
-                            //dateSpan.innerHTML = this['name'];
-                            aTag.innerHTML = this['name'];
-                            var item = document.createElement('li');
-                            //aTag.appendChild(dateSpan);
-                            item.onclick = function () {
-                                console.log("Li clicked..");
+                                                            var contact_num = data[0].value;
+                                                            console.log(contact_num);
 
-                                var test = document.getElementById("test");
-                                test.setAttribute('aria-expanded', "false");
-                                var test1 = document.getElementById("pages-nav-list");
-                                test1.setAttribute('class', "list-unstyled collapse");
-                                $.ajax({
-                                    url: "http://localhost:8084/activiti-rest/service/repository/deployments/2501/resourcedata/Pizza.bpmn20.xml/",
-                                    dataType: "xml",
-                                    success: function (data) {
-                                        //console.log(data);
-                                        console.log(xmlToJson(data));
-                                        var json_data = xmlToJson(data);
-                                        //console.log(json_data);
-                                        //console.log(json_data['definitions']['process']['userTask']);
-                                        var count = json_data['definitions']['process']['userTask'].length;
-                                        //console.log(count);
-                                        for (var i = 0; i < count; i++) {
+                                                            var email_id = data[4].value;
+                                                            console.log(email_id);
 
-                                            var task_aTag = document.createElement('a');
-                                            task_aTag.setAttribute('href', "#");
-                                            var dateSpan = document.createElement('span');
-                                            var user_task_id = json_data['definitions']['process']['userTask'][i]['@attributes']['id'];
-                                            var task_name = json_data['definitions']['process']['userTask'][i]['@attributes']['name'];
-                                            //var task_assignee = json_data['definitions']['process']['userTask'][i]['@attributes']['activiti:assignee'];
-                                            dateSpan.innerHTML = task_name;
-                                            var task_item = document.createElement('li');
-                                            task_aTag.appendChild(dateSpan);
-                                            task_item.append(task_aTag);
-                                            activiti_list.appendChild(task_item);
-                                            console.log(task_name);
+                                                            var address = data[2].value;
+                                                            console.log(address);
 
-                                        }
-                                    }
-                                });
-                            };
-                            item.id = this['deploymentId'];
-                            item.appendChild(aTag);
-
-                            // Add it to the list:
-                            list.appendChild(item);
-
-                        });
-
-                    }
-                });
-
-            });
-            function xmlToJson(xml) {
-
-                // Create the return object
-                var obj = {};
-
-                if (xml.nodeType == 1) { // element
-                    // do attributes
-                    if (xml.attributes.length > 0) {
-                        obj["@attributes"] = {};
-                        for (var j = 0; j < xml.attributes.length; j++) {
-                            var attribute = xml.attributes.item(j);
-                            obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
-                        }
-                    }
-                } else if (xml.nodeType == 3) { // text
-                    obj = xml.nodeValue;
-                }
-
-                // do children
-                // If just one text node inside
-                if (xml.hasChildNodes() && xml.childNodes.length === 1 && xml.childNodes[0].nodeType === 3) {
-                    obj = xml.childNodes[0].nodeValue;
-                }
-                else if (xml.hasChildNodes()) {
-                    for (var i = 0; i < xml.childNodes.length; i++) {
-                        var item = xml.childNodes.item(i);
-                        var nodeName = item.nodeName;
-                        if (typeof (obj[nodeName]) == "undefined") {
-                            obj[nodeName] = xmlToJson(item);
-                        } else {
-                            if (typeof (obj[nodeName].push) == "undefined") {
-                                var old = obj[nodeName];
-                                obj[nodeName] = [];
-                                obj[nodeName].push(old);
+                                                            var pizza = data[1].value;
+                                                            console.log(pizza);
+                                                            
+                                                            //$('#show_tables').load('tables.html');
+                                                            $('#show_tables').append("<table class=table>\n\
+                                                            <tbody>\n\
+                                                            <tr>\n\
+                                                            <td>"+customer_name+"</td></tr></thead></table>");
+                                                
+                                                        }
+                                                    });
+                                                    
+                                                }
+                                            }
+                                         });
+                                         
+                                     }
+                                     
+                                 }
                             }
-                            obj[nodeName].push(xmlToJson(item));
-                        }
-                    }
-                }
-                return obj;
-            }
-        </script>
-    </head>
-    <body>
-        <!-- Side Navbar -->
-        <nav class="side-navbar">
-            <div class="side-navbar-wrapper">
-                <div class="main-menu" style="margin-top: 16px;">
-                    <ul id="side-main-menu" class="side-menu list-unstyled">
-                        <li> <a id="test" href="#pages-nav-list" data-toggle="collapse" aria-expanded="false"><i class="icon-interface-windows"></i><span>Process List</span>
-                                <div class="arrow pull-right"><i class="fa fa-angle-down"></i></div></a>
-                            <ul id="pages-nav-list" class="collapse list-unstyled">
-                            </ul>
-                        </li>
-                        <!--<li class="active"><a href="#"> <i class="icon-home"></i><span>Home</span></a></li>
-                        <li> <a href="#"><i class="icon-form"></i><span>Forms</span></a></li>
-                        <li> <a href="#"><i class="icon-presentation"></i><span>Charts</span></a></li>
-                        <li> <a href="#"> <i class="icon-grid"> </i><span>Tables  </span></a></li>
-                        <li> <a href="#"> <i class="icon-interface-windows"></i><span>Login page </span></a></li>
-                        <li> <a href="#"> <i class="icon-mail"></i><span>Demo</span>
-                            <div class="badge badge-warning">6 New</div></a></li>-->
-                    </ul>
-                </div>
-                <!--<div class="admin-menu">
-                  <ul id="side-admin-menu" class="side-menu list-unstyled"> 
-                    <li> <a href="#pages-nav-list" data-toggle="collapse" aria-expanded="false"><i class="icon-interface-windows"></i><span>Dropdown</span>
-                        <div class="arrow pull-right"><i class="fa fa-angle-down"></i></div></a>
-                      <ul id="pages-nav-list" class="collapse list-unstyled">
-                        <li> <a href="#">Page 1</a></li>
-                        <li> <a href="#">Page 2</a></li>
-                        <li> <a href="#">Page 3</a></li>
-                        <li> <a href="#">Page 4</a></li>
-                      </ul>
-                    </li>
-                <!--<li> <a href="#"> <i class="icon-screen"> </i><span>Demo</span></a></li>
-                <li> <a href="#"> <i class="icon-flask"> </i><span>Demo</span>
-                    <div class="badge badge-info">Special</div></a></li>
-                <li> <a href=""> <i class="icon-flask"> </i><span>Demo</span></a></li>
-                <li> <a href=""> <i class="icon-picture"> </i><span>Demo</span></a></li>
-              </ul>
-            </div>-->
-            </div>
-        </nav>
-        <div class="page home-page">
-            <!-- navbar-->
-            <header class="header">
-                <nav class="navbar">
-                    <div class="container-fluid">
-                        <div class="navbar-holder d-flex align-items-center justify-content-between">
-                            <div class="navbar-header"><a id="toggle-btn" href="#" class="menu-btn"><i class="icon-bars"> </i></a><a href="index.html" class="navbar-brand">
-                                    <div class="brand-text d-none d-md-inline-block"><strong class="text-primary">Dashboard</strong></div></a></div>
-                            <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
-                                <li class="nav-item"><a href="login.html" class="nav-link logout">Logout<i class="fa fa-sign-out"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
-            </header>
+                           
+                       });
+            });
+            });
+            
+  });
+  function xmlToJson(xml) {
 
+	// Create the return object
+	var obj = {};
+
+	if (xml.nodeType == 1) { // element
+		// do attributes
+		if (xml.attributes.length > 0) {
+		obj["@attributes"] = {};
+			for (var j = 0; j < xml.attributes.length; j++) {
+				var attribute = xml.attributes.item(j);
+				obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
+			}
+		}
+	} else if (xml.nodeType == 3) { // text
+		obj = xml.nodeValue;
+	}
+
+	// do children
+	// If just one text node inside
+	if (xml.hasChildNodes() && xml.childNodes.length === 1 && xml.childNodes[0].nodeType === 3) {
+		obj = xml.childNodes[0].nodeValue;
+	}
+	else if (xml.hasChildNodes()) {
+		for(var i = 0; i < xml.childNodes.length; i++) {
+			var item = xml.childNodes.item(i);
+			var nodeName = item.nodeName;
+			if (typeof(obj[nodeName]) == "undefined") {
+				obj[nodeName] = xmlToJson(item);
+			} else {
+				if (typeof(obj[nodeName].push) == "undefined") {
+					var old = obj[nodeName];
+					obj[nodeName] = [];
+					obj[nodeName].push(old);
+				}
+				obj[nodeName].push(xmlToJson(item));
+			}
+		}
+	}
+	return obj;
+}
+</script>
+</head>
+<body>
+    <!-- Side Navbar -->
+    <nav class="side-navbar">
+      <div class="side-navbar-wrapper">
+        <div class="main-menu" style="margin-top: 16px;">
+            <ul>
+                <li> <a id="test" href="#pages-nav-list" data-toggle="collapse" aria-expanded="false"><i class="icon-interface-windows"></i><span>Process List</span>
+                <div class="arrow pull-right"><i class="fa fa-angle-down"></i></div></a>
+                <ul id="pages-nav-list" class="collapse list-unstyled">
+                </ul>
+            </li>
+            </ul>
+          <ul id="side-main-menu" class="side-menu list-unstyled">
+            <a href="#"> <i class="icon-home"></i><span>Activitis List</span></a>
+          </ul>
         </div>
-        <!-- Javascript files-->
-        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
-        <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-        <script src="vendor/jquery.cookie/jquery.cookie.js"></script>
-        <script src="js/grasp_mobile_progress_circle-1.0.0.min.js"></script>
-        <script src="vendor/jquery-validation/jquery.validate.min.js"></script>
-        <script src="vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-        <script src="js/charts-home.js"></script>
-        <script src="js/front.js"></script>
-    </body>
+      </div>
+    </nav>
+    <div class="page home-page">
+      <!-- navbar-->
+      <header class="header">
+        <nav class="navbar">
+          <div class="container-fluid">
+            <div class="navbar-holder d-flex align-items-center justify-content-between">
+              <div class="navbar-header"><a id="toggle-btn" href="#" class="menu-btn"><i class="icon-bars"> </i></a><a href="index.html" class="navbar-brand">
+                  <div class="brand-text d-none d-md-inline-block"><strong class="text-primary">Dashboard</strong></div></a></div>
+                  <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
+                    <li class="nav-item"><a href="#" class="nav-link logout">Logout<i class="fa fa-sign-out"></i></a></li>
+                  </ul>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div id="show_tables"></div>
+    </div>
+    <!-- Javascript files-->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"> </script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="vendor/jquery.cookie/jquery.cookie.js"> </script>
+    <script src="js/grasp_mobile_progress_circle-1.0.0.min.js"></script>
+    <script src="vendor/jquery-validation/jquery.validate.min.js"></script>
+    <script src="vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <script src="js/charts-home.js"></script>
+    <script src="js/front.js"></script>
+  </body>
 </html>

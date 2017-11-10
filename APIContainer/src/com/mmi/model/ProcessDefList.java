@@ -1,4 +1,4 @@
-package main.java.com.mmi.model;
+package com.mmi.model;
 
 public class ProcessDefList {
 	

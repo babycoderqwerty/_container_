@@ -1,4 +1,4 @@
-package main.java.com.mmi.controller;
+package com.mmi.controller;
 
 
 import java.util.List;
@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import main.java.com.mmi.dao.UserDAO;
-import main.java.com.mmi.model.ProcessDefList;
-import main.java.com.mmi.model.RuTskModel;
-import main.java.com.mmi.model.UserModel;
+import com.mmi.dao.UserDAO;
+import com.mmi.model.ProcessDefList;
+import com.mmi.model.RuTskModel;
+import com.mmi.model.UserModel;
 
 
 @RestController

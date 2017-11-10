@@ -1,4 +1,4 @@
-package main.java.com.mmi.dao;
+package com.mmi.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,10 +12,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 
-import main.java.com.mmi.model.ExeuQuery;
-import main.java.com.mmi.model.ProcessDefList;
-import main.java.com.mmi.model.RuTskModel;
-import main.java.com.mmi.model.UserModel;
+import com.mmi.model.ExeuQuery;
+import com.mmi.model.ProcessDefList;
+import com.mmi.model.RuTskModel;
+import com.mmi.model.UserModel;
 
 public class UserDAOImpl implements UserDAO {
 	

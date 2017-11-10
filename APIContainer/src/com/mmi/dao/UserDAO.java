@@ -1,10 +1,10 @@
-package main.java.com.mmi.dao;
+package com.mmi.dao;
 
 import java.util.List;
 
-import main.java.com.mmi.model.ProcessDefList;
-import main.java.com.mmi.model.RuTskModel;
-import main.java.com.mmi.model.UserModel;
+import com.mmi.model.ProcessDefList;
+import com.mmi.model.RuTskModel;
+import com.mmi.model.UserModel;
 
 public interface UserDAO {
 	

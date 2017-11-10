@@ -1,0 +1,6 @@
+/APIContainer/build/
+/APIContainer/dist/
+/serviceCRM/nbproject/private/
+/serviceCRM/dist/
+/serviceCRM/build/
+*.jar

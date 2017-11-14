@@ -5,284 +5,330 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <html>
-<head>
-  <title>Service CRM</title>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="all,follow">
-  <!-- Bootstrap CSS-->
-  <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
-  <!-- Font Awesome CSS-->
-  <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
-  <!-- Custom icon font-->
-  <link rel="stylesheet" href="css/fontastic.css">
-  <!-- Google fonts - Roboto -->
-  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
-  <!-- jQuery Circle-->
-  <link rel="stylesheet" href="css/grasp_mobile_progress_circle-1.0.0.min.css">
-  <!-- Custom Scrollbar-->
-  <link rel="stylesheet" href="vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css">
-  <!-- theme stylesheet-->
-  <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
-  <!-- Custom stylesheet - for your changes-->
-  <link rel="stylesheet" href="css/custom.css">
-<script type="text/javascript">
+    <head>
+        <title>Service CRM</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- HTTP 1.1 -->
+        <meta http-equiv="Cache-Control" content="no-store"/>
+        <!-- HTTP 1.0 -->
+        <meta http-equiv="Pragma" content="no-cache"/>
+        <!-- Prevents caching at the Proxy Server -->
+        <meta http-equiv="Expires" content="0"/>
+        <meta name="robots" content="all,follow">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/datatable.css">
 
-  $(document).ready(function () {
-     $.ajax({ 
-                            
-        type: 'GET', 
-        url: 'http://localhost:8084/ActivitiBPMDatabaseAPI/process_List/repository/process-definition', 
-        dataType: 'json',
-        //data : { username : username, password : password, task_id1 : task_id1, assignee_name : assignee_name },
-        success: function (data) {
-            console.log(data);
-            $.each(data, function() {
-            $("#pages-nav-list").append("<li id ="+this['deploymentId']+"><a href=#>"+this['name']+"</a></li>");
-             
-         });
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+        <script src="vendor/jquery.cookie/jquery.cookie.js"></script>
+        <script src="js/grasp_mobile_progress_circle-1.0.0.min.js"></script>
+        <script src="vendor/jquery-validation/jquery.validate.min.js"></script>
+        <script src="vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+        <script src="js/charts-home.js"></script>
+        <script src="js/front.js"></script>
 
-      }
-  });
-       $("#pages-nav-list").on('click', 'li', function(e){
-               //console.log(this.id);
-               $("#pages-nav-list").attr("class", "list-unstyled collapse");
-               $.ajax({
-                  type: 'GET',
-                  url: 'http://localhost:8084/activiti-rest/service/repository/deployments/'+this.id+'/resourcedata/Pizza.bpmn20.xml',
-                  dataType: 'xml',
-                  success: function(data){
-                       var json_data = xmlToJson(data);
-                       //console.log(json_data);
-                       var count = json_data['definitions']['process']['userTask'].length;
-                       //console.log(count);
-                       
-                       for(var i=0; i<count; i++){
-                           if(json_data['definitions']['process']['userTask'][i].hasOwnProperty('extensionElements')){
-                               
-                               if(json_data['definitions']['process']['userTask'][i]['extensionElements'].hasOwnProperty('activiti:formProperty')){
-                                   
-                                   if(json_data['definitions']['process']['userTask'][i]['@attributes'].hasOwnProperty('activiti:assignee')){
-                                       
-                                       var user_task_id = json_data['definitions']['process']['userTask'][i]['@attributes']['id'];
-                                       var task_name = json_data['definitions']['process']['userTask'][i]['@attributes']['name'];
-                                       var assignee = json_data['definitions']['process']['userTask'][i]['@attributes']['activiti:assignee'];
-                                       
-                                       $("#side-main-menu").append("<li id="+assignee+"><a href=#><span>"+task_name+"</span></a></li>");
-                                       
-                                   }
-                                   else{
+        <script type="text/javascript" src="js/datatable.js"></script>
+        
+        <!-- Bootstrap CSS-->
+        <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
+        
+        <!-- Font Awesome CSS-->
+        <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
+        
+        <!-- Custom icon font-->
+        <link rel="stylesheet" href="css/fontastic.css">
+        
+        <!-- Google fonts - Roboto -->
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+        
+        <!-- jQuery Circle-->
+        <link rel="stylesheet" href="css/grasp_mobile_progress_circle-1.0.0.min.css">
+        
+        <!-- Custom Scrollbar-->
+        <link rel="stylesheet" href="vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css">
+        
+
+        <!-- theme stylesheet-->
+        <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
+        <!-- Custom stylesheet - for your changes-->
+        <link rel="stylesheet" href="css/custom.css">
+        <script type="text/javascript">
+
+        $(document).ready(function () {
+            $.ajax({
+                type: 'GET',
+                url: 'http://localhost:8084/ActivitiBPMDatabaseAPI/process_List/repository/process-definition',
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    $.each(data, function () {
+                        $("#pages-nav-list").append("<li id =" + this['deploymentId'] + "><a id = "+this['key']+" href=#>" + this['name'] + "</a></li>");
+
+                    });
+
+                }
+            });
+            $("#pages-nav-list").on('click', 'li', function (e) {
+                //console.log(this.id);
+                var process_key = $('a', this).attr('id');
+                localStorage.setItem("process_key", process_key);
+                //console.log(process_key);
+                $("#pages-nav-list").attr("class", "list-unstyled collapse");
+                $.ajax({
+                    type: 'GET',
+                    url: 'http://localhost:8084/activiti-rest/service/repository/deployments/' + this.id + '/resourcedata/Pizza.bpmn20.xml',
+                    dataType: 'xml',
+                    success: function (data) {
+                        var json_data = xmlToJson(data);
+                        console.log(json_data);
+                        var count = json_data['definitions']['process']['userTask'].length;
+                        //console.log(count);
+
+                        for (var i = 0; i < count; i++) {
+                            if (json_data['definitions']['process']['userTask'][i].hasOwnProperty('extensionElements')) {
+
+                                if (json_data['definitions']['process']['userTask'][i]['extensionElements'].hasOwnProperty('activiti:formProperty')) {
+
+                                    if (json_data['definitions']['process']['userTask'][i]['@attributes'].hasOwnProperty('activiti:assignee')) {
+
+                                        var user_task_id = json_data['definitions']['process']['userTask'][i]['@attributes']['id'];
+                                        var task_name = json_data['definitions']['process']['userTask'][i]['@attributes']['name'];
+                                        var assignee = json_data['definitions']['process']['userTask'][i]['@attributes']['activiti:assignee'];
+
+                                        $("#side-main-menu").append("<li id=" + assignee + "><a id=form_id href=#><span id="+task_name+">" + task_name + "</span></a></li>");
+
+                                    }
+                                    else {
                                         var user_task_id = json_data['definitions']['process']['userTask'][i]['@attributes']['id'];
                                         var task_name = json_data['definitions']['process']['userTask'][i]['@attributes']['name'];
                                         var assignee = json_data['definitions']['process']['userTask'][i]['@attributes']['activiti:candidateGroups'];
-                                       
-                                        $("#side-main-menu").append("<li id="+assignee+"><a href=#><span>"+task_name+"</span></a></li>");
-                                   }
-                           
-                                  
-                               }
-                               else{
 
-                                    if(json_data['definitions']['process']['userTask'][i]['@attributes'].hasOwnProperty('activiti:assignee')){
-                                       
+                                        $("#side-main-menu").append("<li id=" + assignee + "><a href=#><span id="+task_name+">" + task_name + "</span></a></li>");
+                                    }
+
+
+                                }
+                                else {
+
+                                    if (json_data['definitions']['process']['userTask'][i]['@attributes'].hasOwnProperty('activiti:assignee')) {
+
+                                        var user_task_id = json_data['definitions']['process']['userTask'][i]['@attributes']['id'];
+                                        var task_name = json_data['definitions']['process']['userTask'][i]['@attributes']['name'];
+                                        var assignee = json_data['definitions']['process']['userTask'][i]['@attributes']['activiti:assignee'];
+
+                                        $("#side-main-menu").append("<li id=" + assignee + "><a href=#><span>" + task_name + "</span></a></li>");
+
+                                    }
+                                    else {
+                                        var user_task_id = json_data['definitions']['process']['userTask'][i]['@attributes']['id'];
+                                        var task_name = json_data['definitions']['process']['userTask'][i]['@attributes']['name'];
+                                        var assignee = json_data['definitions']['process']['userTask'][i]['@attributes']['activiti:candidateGroups'];
+
+                                        $("#side-main-menu").append("<li id=" + assignee + "><a href=#><span>" + task_name + "</span></a></li>");
+                                    }
+                                }
+
+                            }
+                            else {
+
+                                if (json_data['definitions']['process']['userTask'][i]['@attributes'].hasOwnProperty('activiti:assignee')) {
+
                                     var user_task_id = json_data['definitions']['process']['userTask'][i]['@attributes']['id'];
                                     var task_name = json_data['definitions']['process']['userTask'][i]['@attributes']['name'];
                                     var assignee = json_data['definitions']['process']['userTask'][i]['@attributes']['activiti:assignee'];
-                                       
-                                    $("#side-main-menu").append("<li id="+assignee+"><a href=#><span>"+task_name+"</span></a></li>");
-                                       
-                                   }
-                                   else{
-                                        var user_task_id = json_data['definitions']['process']['userTask'][i]['@attributes']['id'];
-                                        var task_name = json_data['definitions']['process']['userTask'][i]['@attributes']['name'];
-                                        var assignee = json_data['definitions']['process']['userTask'][i]['@attributes']['activiti:candidateGroups'];
-                                       
-                                        $("#side-main-menu").append("<li id="+assignee+"><a href=#><span>"+task_name+"</span></a></li>");
-                                   }
-                               }
-                               
-                           }
-                           else{
-                                   
-                                   if(json_data['definitions']['process']['userTask'][i]['@attributes'].hasOwnProperty('activiti:assignee')){
-                                       
-                                       var user_task_id = json_data['definitions']['process']['userTask'][i]['@attributes']['id'];
-                                       var task_name = json_data['definitions']['process']['userTask'][i]['@attributes']['name'];
-                                       var assignee = json_data['definitions']['process']['userTask'][i]['@attributes']['activiti:assignee'];
-                                       
-                                       $("#side-main-menu").append("<li id="+assignee+"><a href=#><span>"+task_name+"</span></a></li>");
-                                       
-                                   }
-                                   else{
-                                        var user_task_id = json_data['definitions']['process']['userTask'][i]['@attributes']['id'];
-                                        var task_name = json_data['definitions']['process']['userTask'][i]['@attributes']['name'];
-                                        var assignee = json_data['definitions']['process']['userTask'][i]['@attributes']['activiti:candidateGroups'];
-                                       
-                                        $("#side-main-menu").append("<li id="+assignee+"><a href=#><span>"+task_name+"</span></a></li>");
-                                   }
-                           }                           
-                       } 
-                  }
-               });
-                $("#side-main-menu").on('click', 'li', function(e){
+
+                                    $("#side-main-menu").append("<li id=" + assignee + "><a href=#><span>" + task_name + "</span></a></li>");
+
+                                }
+                                else {
+                                    var user_task_id = json_data['definitions']['process']['userTask'][i]['@attributes']['id'];
+                                    var task_name = json_data['definitions']['process']['userTask'][i]['@attributes']['name'];
+                                    var assignee = json_data['definitions']['process']['userTask'][i]['@attributes']['activiti:candidateGroups'];
+
+                                    $("#side-main-menu").append("<li id=" + assignee + "><a href=#><span>" + task_name + "</span></a></li>");
+                                }
+                            }
+                        }
+                    }
+                });
+                $("#side-main-menu").on('click', 'li', function (e) {
+                    //console.log($('a', this).attr('id'));
+                    //console.log($('span', this).text());
+                    var task_name = $('span', this).text();
+                    localStorage.setItem("task_name", task_name);
+                    var form_id = $('a', this).attr('id');
+                    //console.log(form_id);
+                    if(form_id=="form_id"){
+                        
+                        window.open("http://localhost:8084/serviceCRM/newWindow.html#form_id", "_blank", "toolbar=yes,scrollbars=yes");
+                        
+                    }
+                    else{
+                        
+                    $("#show_tables").load(location.href + " #show_tables");
                     var role = this.id;
                     var work = $(this).text();
-                       $.ajax({
-                            type: 'GET', 
-                            url: 'http://localhost:8084/activiti-rest/service/runtime/tasks', 
-                            dataType: 'json',
-                            success: function (data) {
-                                console.log(data);
-                                var task_list = data.data.length;
-                                //console.log(task_list);
-                                 for(var i=0; i<task_list; i++){
-                                     
-                                     if(data.data[i]['name']== work){
-                                         var task_id = data.data[i]['id'];
-                                         
-                                         $.ajax({
-                                            type: 'GET',
-                                            url: 'http://localhost:8084/activiti-rest/service/runtime/tasks/'+task_id+'/identitylinks',
-                                            dataType: 'json',
-                                            success: function(data){
-                                                //console.log(data);
-                                                if(data[0]['group'] == role){
-                                                    //console.log("kscgauzj");
-                                                    $.ajax({
-                                                        type: 'GET',
-                                                        url: 'http://localhost:8084/activiti-rest/service/runtime/tasks/'+task_id+'/variables',
-                                                        dataType: 'json',
-                                                        success: function(data){
-                                                            console.log(data);
-                                                            var customer_name = data[3].value;
-                                                            console.log(customer_name);
+                    $.ajax({
+                        type: 'GET',
+                        url: 'http://localhost:8084/activiti-rest/service/runtime/tasks',
+                        dataType: 'json',
+                        success: function (data) {
+                            console.log(data);
+                            var task_list = data.data.length;
+                            console.log(task_list);
+                            $('#show_tables').append("<table id=example class=display cellspacing=0 width=100%>\n\
+                                <thead><tr><th>Id</th><th>Name</th><th>Contact Number</th><th>Email Id</th><th>Address</th>\n\
+                                <th>Pizza</th></tr></thead><tfoot><tr><th>Name</th><th>Contact Number</th><th>Email Id</th><th>Address</th>\n\
+                                <th>Pizza</th></tr></tfoot></table>");
+                                
+                                var customer_name = "";
+                                var contact_num = "";
+                                var email_id = "";
+                                var pizza = "";
+                                var address = "";
+                            for (var i = 0; i < task_list; i++) {
+                                var task_id = "";
+                                if (data.data[i]['name'] == work) {
+                                    task_id = data.data[i]['id'];
+                                    console.log(task_id);
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: 'http://localhost:8084/activiti-rest/service/runtime/tasks/' + task_id + '/identitylinks',
+                                        dataType: 'json',
+                                        async: false,
+                                        success: function (data) {
+                                            //console.log(data);
+                                            if (data[0]['group'] == role) {
+                                                //console.log("kscgauzj");
+                                                 console.log(task_id);
+                                                $.ajax({
+                                                    type: 'GET',
+                                                    url: 'http://localhost:8084/activiti-rest/service/runtime/tasks/' + task_id + '/variables',
+                                                    dataType: 'json',
+                                                    async: false,
+                                                    success: function (data) {
+                                                        console.log(data);
+                                                        customer_name = data[3].value;
+                                                        //console.log(customer_name);
 
-                                                            var contact_num = data[0].value;
-                                                            console.log(contact_num);
+                                                        contact_num = data[0].value;
+                                                        //console.log(contact_num);
 
-                                                            var email_id = data[4].value;
-                                                            console.log(email_id);
+                                                        email_id = data[4].value;
+                                                        //console.log(email_id);
 
-                                                            var address = data[2].value;
-                                                            console.log(address);
+                                                        pizza = data[2].value;
+                                                        //console.log(pizza);
 
-                                                            var pizza = data[1].value;
-                                                            console.log(pizza);
-                                                            
-                                                            //$('#show_tables').load('tables.html');
-                                                            $('#show_tables').append("<table class=table>\n\
-                                                            <tbody>\n\
-                                                            <tr>\n\
-                                                            <td>"+customer_name+"</td></tr></thead></table>");
-                                                
-                                                        }
-                                                    });
-                                                    
-                                                }
+                                                        address = data[1].value;
+                                                        //console.log(address);
+
+                                                        //$('#show_tables').load('tables.html');
+                                                        $('#example').append("<tbody><tr><td><a href=newWindow.html target=_new>"+task_id+"</a></td><td>"+customer_name+"</td>\n\
+                                                            <td>"+contact_num+"</td>\n\
+                                                            <td>"+email_id+"</td>\n\
+                                                            <td>"+address+"</td>\n\
+                                                            <td>"+pizza+"</td></tr></tbody>");
+                                                          $('#example').DataTable();                                       
+                                                    }
+                                                });
+
                                             }
-                                         });
-                                         
-                                     }
-                                     
-                                 }
+                                        }
+                                    });
+
+                                }
+
                             }
-                           
-                       });
+                        }
+
+                    });
+                        
+                    }
+
+                });
             });
-            });
-            
-  });
-  function xmlToJson(xml) {
 
-	// Create the return object
-	var obj = {};
+        });
+        function xmlToJson(xml) {
 
-	if (xml.nodeType == 1) { // element
-		// do attributes
-		if (xml.attributes.length > 0) {
-		obj["@attributes"] = {};
-			for (var j = 0; j < xml.attributes.length; j++) {
-				var attribute = xml.attributes.item(j);
-				obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
-			}
-		}
-	} else if (xml.nodeType == 3) { // text
-		obj = xml.nodeValue;
-	}
+            // Create the return object
+            var obj = {};
 
-	// do children
-	// If just one text node inside
-	if (xml.hasChildNodes() && xml.childNodes.length === 1 && xml.childNodes[0].nodeType === 3) {
-		obj = xml.childNodes[0].nodeValue;
-	}
-	else if (xml.hasChildNodes()) {
-		for(var i = 0; i < xml.childNodes.length; i++) {
-			var item = xml.childNodes.item(i);
-			var nodeName = item.nodeName;
-			if (typeof(obj[nodeName]) == "undefined") {
-				obj[nodeName] = xmlToJson(item);
-			} else {
-				if (typeof(obj[nodeName].push) == "undefined") {
-					var old = obj[nodeName];
-					obj[nodeName] = [];
-					obj[nodeName].push(old);
-				}
-				obj[nodeName].push(xmlToJson(item));
-			}
-		}
-	}
-	return obj;
-}
-</script>
-</head>
-<body>
-    <!-- Side Navbar -->
-    <nav class="side-navbar">
-      <div class="side-navbar-wrapper">
-        <div class="main-menu" style="margin-top: 16px;">
-            <ul>
-                <li> <a id="test" href="#pages-nav-list" data-toggle="collapse" aria-expanded="false"><i class="icon-interface-windows"></i><span>Process List</span>
-                <div class="arrow pull-right"><i class="fa fa-angle-down"></i></div></a>
-                <ul id="pages-nav-list" class="collapse list-unstyled">
-                </ul>
-            </li>
-            </ul>
-          <ul id="side-main-menu" class="side-menu list-unstyled">
-            <a href="#"> <i class="icon-home"></i><span>Activitis List</span></a>
-          </ul>
-        </div>
-      </div>
-    </nav>
-    <div class="page home-page">
-      <!-- navbar-->
-      <header class="header">
-        <nav class="navbar">
-          <div class="container-fluid">
-            <div class="navbar-holder d-flex align-items-center justify-content-between">
-              <div class="navbar-header"><a id="toggle-btn" href="#" class="menu-btn"><i class="icon-bars"> </i></a><a href="index.html" class="navbar-brand">
-                  <div class="brand-text d-none d-md-inline-block"><strong class="text-primary">Dashboard</strong></div></a></div>
-                  <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
-                    <li class="nav-item"><a href="#" class="nav-link logout">Logout<i class="fa fa-sign-out"></i></a></li>
-                  </ul>
+            if (xml.nodeType == 1) { // element
+                // do attributes
+                if (xml.attributes.length > 0) {
+                    obj["@attributes"] = {};
+                    for (var j = 0; j < xml.attributes.length; j++) {
+                        var attribute = xml.attributes.item(j);
+                        obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
+                    }
+                }
+            } else if (xml.nodeType == 3) { // text
+                obj = xml.nodeValue;
+            }
+
+            // do children
+            // If just one text node inside
+            if (xml.hasChildNodes() && xml.childNodes.length === 1 && xml.childNodes[0].nodeType === 3) {
+                obj = xml.childNodes[0].nodeValue;
+            }
+            else if (xml.hasChildNodes()) {
+                for (var i = 0; i < xml.childNodes.length; i++) {
+                    var item = xml.childNodes.item(i);
+                    var nodeName = item.nodeName;
+                    if (typeof (obj[nodeName]) == "undefined") {
+                        obj[nodeName] = xmlToJson(item);
+                    } else {
+                        if (typeof (obj[nodeName].push) == "undefined") {
+                            var old = obj[nodeName];
+                            obj[nodeName] = [];
+                            obj[nodeName].push(old);
+                        }
+                        obj[nodeName].push(xmlToJson(item));
+                    }
+                }
+            }
+            return obj;
+        }
+        </script>
+    </head>
+    <body>
+        <!-- Side Navbar -->
+        <nav class="side-navbar">
+            <div class="side-navbar-wrapper">
+                <div class="main-menu" style="margin-top: 16px;">
+                    <ul>
+                        <li> <a id="test" href="#pages-nav-list" data-toggle="collapse" aria-expanded="false"><i class="icon-interface-windows"></i><span>Process List</span>
+                                <div class="arrow pull-right"><i class="fa fa-angle-down"></i></div></a>
+                            <ul id="pages-nav-list" class="collapse list-unstyled">
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul id="side-main-menu" class="side-menu list-unstyled">
+                        <a href="#"> <i class="icon-home"></i><span>Activitis List</span></a>
+                    </ul>
+                </div>
             </div>
-          </div>
         </nav>
-      </header>
-      <div id="show_tables"></div>
-    </div>
-    <!-- Javascript files-->
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"> </script>
-    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script src="vendor/jquery.cookie/jquery.cookie.js"> </script>
-    <script src="js/grasp_mobile_progress_circle-1.0.0.min.js"></script>
-    <script src="vendor/jquery-validation/jquery.validate.min.js"></script>
-    <script src="vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-    <script src="js/charts-home.js"></script>
-    <script src="js/front.js"></script>
-  </body>
+        <div class="page home-page">
+            <!-- navbar-->
+            <header class="header">
+                <nav class="navbar">
+                    <div class="container-fluid">
+                        <div class="navbar-holder d-flex align-items-center justify-content-between">
+                            <div class="navbar-header"><a id="toggle-btn" href="#" class="menu-btn"><i class="icon-bars"> </i></a><a href="index.html" class="navbar-brand">
+                                    <div class="brand-text d-none d-md-inline-block"><strong class="text-primary">Dashboard</strong></div></a></div>
+                            <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
+                                <li class="nav-item"><a href="#" class="nav-link logout">Logout<i class="fa fa-sign-out"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+            <div id="show_tables" style="margin: 20px;"></div>
+        </div>
+    </body>
 </html>

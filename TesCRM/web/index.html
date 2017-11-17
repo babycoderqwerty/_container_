@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!--   Core JS Files   -->
+        <script src="assets/js/jquery-1.10.2.js" type="text/javascript"></script>
+        <script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
+
+        <!--  Checkbox, Radio & Switch Plugins -->
+        <script src="assets/js/bootstrap-checkbox-radio.js"></script>
+
+        <!--  Charts Plugin -->
+        <script src="assets/js/chartist.min.js"></script>
+
+        <!--  Notifications Plugin    -->
+        <script src="assets/js/bootstrap-notify.js"></script>
+
+        <!--  Google Maps Plugin    -->
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
+
+        <!-- Paper Dashboard Core javascript and methods for Demo purpose -->
+        <script src="assets/js/paper-dashboard.js"></script>
+
+        <!-- Bootstrap core CSS     -->
+        <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+
+        <!-- Animation library for notifications   -->
+        <link href="assets/css/animate.min.css" rel="stylesheet"/>
+
+        <!--  Paper Dashboard core CSS    -->
+        <link href="assets/css/paper-dashboard.css" rel="stylesheet"/>
+
+
+        <!--  CSS for Demo Purpose, don't include it in your project     -->
+        <link href="assets/css/demo.css" rel="stylesheet" />
+
+
+        <!--  Fonts and icons     -->
+        <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+        <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
+        <link href="assets/css/themify-icons.css" rel="stylesheet">
+
+        <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
+        <script src="assets/js/demo.js"></script>
+
+
+        <!-- Angular js -->
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+        <script type="text/javascript" src="https://code.angularjs.org/1.6.4/angular-route.min.js"></script>
+        <script type="text/javascript" src="appJS/app.js"></script>
+        <script src="appController/controller.js"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+
+                demo.initChartist();
+
+
+
+            });
+        </script>
+    </head>
+    <body>
+<!--        <div class="wrapper" ng-app="serviceCRM" ng-controller="myCRM">
+
+
+            <div class="main-panel">
+
+                
+
+                <nav class="navbar navbar-default">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar bar1"></span>
+                                <span class="icon-bar bar2"></span>
+                                <span class="icon-bar bar3"></span>
+                            </button>
+                            <a class="navbar-brand" href="#">Service CRM</a>
+                        </div>
+                        <div class="collapse navbar-collapse">
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="ti-panel"></i><p>Stats</p></a></li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        <i class="ti-bell"></i>
+                                        <p class="notification">5</p>
+                                        <p>Process List</p>
+                                        <b class="caret"></b>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li id="{{processsList.deploymentId}}" ng-repeat="processsList in myData"><a id="{{processsList.resource}}" href="#" ng-click="getActivitiList($event)">{{processsList.name}}</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#"><i class="ti-settings"></i><p>Settings</p></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+                
+                <div class="sidebar" data-background-color="white" data-active-color="danger">
+                     Start of side Nav Bar 
+                    <div class="sidebar-wrapper">
+                        <div class="logo"><a href="#" class="simple-text">Process</a></div>
+
+                        <ul class="dropdown-menu">
+                           <li id="{{processsList.deploymentId}}" ng-repeat="processsList in myData"><a id="{{processsList.resource}}" href="#" ng-click="getActivitiList($event)">{{processsList.name}}</a></li>
+                        </ul>
+                        <div class="logo"><a href="#" class="simple-text">My Queue</a></div>
+
+                        <ul class="nav">
+                            <li ng-repeat="activitiList in activitiData"><a href="#"><p>{{activitiList['@attributes']['name']}}</p></a></li>
+                        </ul>
+
+
+                    </div>
+                     End of side Nav Bar 
+                </div>
+                
+            </div>
+        </div>        -->
+
+<div class="row">
+    <div class="wrapper" ng-app="serviceCRM" ng-controller="myCRM">
+    <div class="nav-wrapper col s12">
+        <nav class="navbar navbar-default">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar bar1"></span>
+                                <span class="icon-bar bar2"></span>
+                                <span class="icon-bar bar3"></span>
+                            </button>
+                            <a class="navbar-brand" href="#">Service CRM</a>
+                        </div>
+                        <div class="collapse navbar-collapse">
+                            <ul class="nav navbar-nav navbar-left">
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        <!--<i class="ti-bell"></i>
+                                        <p class="notification">5</p>-->
+                                        <p>Process List</p>
+                                        <b class="caret"></b>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li id="{{processsList.deploymentId}}" ng-repeat="processsList in myData"><a id="{{processsList.resource}}" href="#" ng-click="getActivitiList($event)">{{processsList.name}}</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="ti-panel"></i><p>Stats</p></a></li>
+                                <li><a href="#"><i class="ti-settings"></i><p>Settings</p></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav></div>
+        <div class="col-sm-3">
+            <div class="sidebar" style="height: 100%" data-background-color="white" data-active-color="danger">
+                <div class="sidebar-wrapper">
+                    <div class="logo">
+                        <a class="simple-text">My Queue</a>
+                    </div>
+                    <ul class="nav">
+                       <li ng-repeat="activitiList in activitiData"><a href="#"><p>{{activitiList['@attributes']['name']}}</p></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">6-columns (one-half)</div>
+    </div>
+    </div>
+    </body>
+</html>

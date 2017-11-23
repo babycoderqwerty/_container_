@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- HTTP 1.1 -->
+        <meta http-equiv="Cache-Control" content="no-store"/>
+        <!-- HTTP 1.0 -->
+        <meta http-equiv="Pragma" content="no-cache"/>
+        <!-- Prevents caching at the Proxy Server -->
+        <meta http-equiv="Expires" content="0"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script>
+          $(document).ready(function(){
+             var from_id = window.location.hash;
+             $('#form_result').load('form/orderPizza.html')
+          });
+        </script>
+    </head>
+    <body>
+        <div id="form_result"></div>
+    </body>
+</html>

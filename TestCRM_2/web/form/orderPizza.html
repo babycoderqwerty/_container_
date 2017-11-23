@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+     <title>User Pizza Request</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+     function start_process(){
+         
+        var process_key = localStorage.getItem("process_key");
+        //console.log(process_key);
+        var task_name = localStorage.getItem("task_name");
+        //console.log(task_name);
+        var customer_name = document.getElementById('username').value;
+        //console.log(customer_name);
+        var user_conct_num = document.getElementById('contac_num').value;
+        //console.log(user_conct_num);
+        var user_email_id = document.getElementById('email_id').value;
+        //console.log(user_email_id);
+        var address = document.getElementById("address").value;
+        //console.log(address);
+        var pizza_name = document.getElementById('veg_pizza').value;
+        //console.log(pizza_name);
+        
+        var arr = {"processDefinitionKey":process_key,
+                    "variables":[{"name":"name","value":customer_name},
+                                {"name":"contactnum","value":user_conct_num},
+                                {"name":"mailid","value":user_email_id},
+                                {"name":"address","value":address},
+                                {"name":"pizza","value":pizza_name}]};
+        $.ajax({
+            type: 'POST',
+            url: 'http://localhost:8084/activiti-rest/service/runtime/process-instances',
+             beforeSend: function (xhr) {
+                        xhr.setRequestHeader ("Authorization", "Basic " + btoa('kermit' + ":" + 'kermit'));
+                        },
+            data: JSON.stringify(arr),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function(data){
+                //console.log(data);
+                $.ajax({
+                    type: 'GET',
+                    url: 'http://localhost:8084/activiti-rest/service/runtime/tasks',
+                     beforeSend: function (xhr) {
+                        xhr.setRequestHeader ("Authorization", "Basic " + btoa('kermit' + ":" + 'kermit'));
+                        },
+                    dataType: 'json',
+                    success: function(data){
+                        //console.log(data);
+                        var count = data.data.length;
+                        console.log(count);
+                        for(var i=0; i<count; i++){
+
+                            if(task_name==data.data[i]['name']){
+                                //console.log("task name get...");
+                                var task_id = data.data[i]['id'];
+                                var complete_task = {"action" : "complete"}
+                                $.ajax({
+                                   type: 'POST',
+                                   url: 'http://localhost:8084/activiti-rest/service/runtime/tasks/'+task_id+'',
+                                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader ("Authorization", "Basic " + btoa('kermit' + ":" + 'kermit'));
+                        },
+                                   data: JSON.stringify(complete_task),
+                                   contentType: 'application/json; charset=utf-8',
+                                   datatype: 'json',
+                                   success: function(){
+                                      //console.log("task completed...");
+                                      
+                                      alert("your orderd has been submited...");
+                                      //location.reload();
+                                       window.close();
+                                   }
+                                });
+                            }
+
+                        }
+                    }
+                 });
+            }
+        });
+         
+     }
+
+    </script>
+</head>
+<body>
+<nav class="navbar navbar-inverse" role="navigation" style="border-radius: 4px; height: 60px;">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#"><img class="img-responsive" width="90%" src="./img/logo.png" alt="MapMyIndia"></a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">      
+  <div class="row">
+    <div class="col-sm-8">
+     <img class="img-responsive" width="90%" src="./img/pizza.PNG" alt="MapMyIndia" style="margin-left: -60px; margin-top: 70px;">
+    </div>
+    <div class="col-sm-4">
+      <div class="container">
+  <h3 id="h3" style="color: red"></h3>
+  <h3 id="h4" style="color: red"></h3>
+  <h3 id="h5" style="color: red"></h3>
+  <h2>Pizza Order</h2>
+  <div class="row">
+    <div class="col-sm-4 form-group">
+      <label for="email">User name :</label>
+      <input type="text" class="form-control" id="username" placeholder="User Name" name="username" required>
+    </div></div>
+    <div class="row">
+    <div class="col-sm-4 form-group">
+      <label for="pwd">Contact Number:</label>
+      <input type="text" class="form-control" id="contac_num" placeholder="Enter Contact Number" name="contac_num" required> 
+    </div></div>
+    <div class="row">
+    <div class="col-sm-4 form-group">
+      <label for="email">Email Id :</label>
+      <input type="text" class="form-control" id="email_id" placeholder="email id" name="email_id" required>
+    </div></div>
+   <div class="row">
+    <div class="col-sm-4 form-group">
+      <label for="email">Address :</label>
+      <input type="text" class="form-control" id="address" placeholder="user address" name="address" required>
+    </div></div>
+    <div class="row" id="veg">
+    <div class="col-sm-4 form-group">
+      <label for="pwd">Select Pizza :</label>
+
+       <select class="form-control" id="veg_pizza" name="veg_pizza" required>
+      	<option>Select--</option>
+      	<option value="FarmHouse">Farm House</option>
+      	<option value="PeppyPaneer">Peppy Paneer</option>
+      	<option value="MexicanGreenWave">Mexican Green Wave</option>
+      </select>
+    </div></div>
+    <button type="submit" class="btn btn-success" onclick="start_process()">Submit</button>
+</div>    
+    </div>
+  </div>
+</div>
+<div id="history" style="margin-left: 20px;">
+  
+</div>
+</body>
+</html>

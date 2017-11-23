@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Material Design Bootstrap</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="css/mdb.min.css" rel="stylesheet">
+    <!-- Your custom styles (optional) -->
+    <link href="css/style.css" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+    
+    <!-- Angular js -->
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+        <script type="text/javascript" src="https://code.angularjs.org/1.6.4/angular-route.min.js"></script>
+        <script type="text/javascript" src="js/app.js"></script>  
+        
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#example').DataTable();
+            $('select').addClass('mdb-select');
+            $('.mdb-select').material_select();
+
+             $(".button-collapse").sideNav();
+        });
+    </script>
+</head>
+
+<body class="fixed-sn light-blue-skin" ng-app="serviceCRM" ng-controller="myCRM">
+
+    <!--Main Navigation-->
+    <header>
+
+        <!--Navbar-->
+        <nav class="navbar navbar-expand-lg navbar-dark double-nav  fixed-top scrolling-navbar">
+
+            <!-- SideNav slide-out button -->
+            <div class="float-left">
+                <a href="#" data-activates="slide-out" class="button-collapse">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+
+            <!-- Breadcrumb-->
+            <div class="breadcrumb-dn mr-auto">
+                <p>Service CRM</p>
+            </div>
+
+            <!-- Links -->
+            <ul class="nav navbar-nav nav-flex-icons ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link">
+                        <i class="fa fa-envelope"></i>
+                        <span class="clearfix d-none d-sm-inline-block">Contact</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link">
+                        <i class="fa fa-gear"></i>
+                        <span class="clearfix d-none d-sm-inline-block">Settings</span>
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-user"></i>
+                        <span class="clearfix d-none d-sm-inline-block">Account</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+            </ul>
+
+        </nav>
+        <!--/.Navbar-->
+
+        <!-- Sidebar navigation -->
+        <div id="slide-out" class="side-nav fixed sn-bg-4">
+            <ul class="custom-scrollbar list-unstyled">
+                <!-- Logo -->
+                <li class="logo-sn waves-effect">
+                    <div class=" text-center">
+                        <!-- <a href="#" class="pl-0">
+                            <img src="https://mdbootstrap.com/img/logo/mdb-transparent.png" class="">
+                        </a> -->
+                        <h1>MMI</h1>
+                    </div>
+                </li>
+                <!--/. Logo -->
+                <!--Search Form-->
+                <li>
+                    <form class="search-form" role="search">
+                        <div class="form-group waves-light">
+                            <input type="text" class="form-control" placeholder="Search">
+                        </div>
+                    </form>
+                </li>
+                <!--/.Search Form-->
+                <!-- Side navigation links -->
+                <li>
+                    <ul class="collapsible collapsible-accordion">
+                        <!--Process List Start -->
+                        <li id="processListActive">
+                            <a class="collapsible-header waves-effect arrow-r">
+                                <i class="fa fa-chevron-right"></i> Process List
+                                <i class="fa fa-angle-down rotate-icon"></i>
+                            </a>
+                            <div class="collapsible-body">
+                                <!--Sub Process List Start-->
+                                <ul>
+                                    <!-- <li>
+                                        <a href="#" class="waves-effect">Submit listing</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="waves-effect">Registration form</a>
+                                    </li> -->
+                                    <li id="{{processsList.deploymentId}}" ng-repeat="processsList in myData"><a id="{{processsList.resource}}" href="#" class="waves-effect" ng-click="getActivitiList($event)">{{processsList.name}}</a></li>
+                                </ul>
+                                <!--Sub Process List End-->
+                            </div>
+                        </li>
+                        <!--Process List End-->
+
+                        <!--Activity List Start-->
+                        <li id="ActivitiListActive">
+                            <a class="collapsible-header waves-effect arrow-r">
+                                <i class="fa fa-hand-pointer-o"></i> Activity List
+                                <i class="fa fa-angle-down rotate-icon"></i>
+                            </a>
+                            <div class="collapsible-body">
+                                <!--Sub Activity List Start-->
+                                <ul>
+                                    <!-- <li>
+                                        <a href="#" class="waves-effect">For bloggers</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="waves-effect">For authors</a>
+                                    </li> -->
+                                     <li id="{{activitiList.user_task_id}}" ng-repeat="activitiList in activitiData"><a id="{{activitiList.form_path}}" href="#" class="waves-effect" ng-click="loadActivityContents($event)">{{activitiList.task_name}}</a></li>
+                                </ul>
+                                <!--Sub Activity List End-->
+                            </div>
+                        </li>
+                         <!--Activity List End-->
+
+
+                        <li>
+                            <a class="collapsible-header waves-effect arrow-r">
+                                <i class="fa fa-eye"></i> About
+                                <i class="fa fa-angle-down rotate-icon"></i>
+                            </a>
+                            <div class="collapsible-body">
+                                <ul>
+                                    <li>
+                                        <a href="#" class="waves-effect">Introduction</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="waves-effect">Monthly meetings</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <a class="collapsible-header waves-effect arrow-r">
+                                <i class="fa fa-envelope-o"></i> Contact me
+                                <i class="fa fa-angle-down rotate-icon"></i>
+                            </a>
+                            <div class="collapsible-body">
+                                <ul>
+                                    <li>
+                                        <a href="#" class="waves-effect">FAQ</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="waves-effect">Write a message</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="waves-effect">FAQ</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="waves-effect">Write a message</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="waves-effect">FAQ</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="waves-effect">Write a message</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="waves-effect">FAQ</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="waves-effect">Write a message</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <!--/. Side navigation links -->
+            </ul>
+
+            <!-- Mask -->
+            <div class="sidenav-bg mask-strong"></div>
+
+        </div>
+        <!--/. Sidebar navigation -->
+
+    </header>
+    <!--Main Navigation-->
+    
+    <main>
+        <section id="table_data" class="mb-5" style="display: none;">
+
+                <!--Card-->
+                <div class="card card-cascade narrower">
+
+                    <!--Card header-->
+                    <div class="view py-3 gradient-card-header info-color-dark mx-4 d-flex justify-content-between align-items-center">
+
+                        <div>
+                            <button type="button" class="btn btn-outline-white btn-rounded btn-sm px-2 waves-effect waves-light">
+                                <i class="fa fa-th-large mt-0"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-white btn-rounded btn-sm px-2 waves-effect waves-light">
+                                <i class="fa fa-columns mt-0"></i>
+                            </button>
+                        </div>
+
+                        <a href="" class="white-text mx-3">Table name</a>
+
+                        <div>
+                            <button type="button" class="btn btn-outline-white btn-rounded btn-sm px-2 waves-effect waves-light">
+                                <i class="fa fa-pencil mt-0"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-white btn-rounded btn-sm px-2 waves-effect waves-light" data-toggle="modal" data-target="#modalConfirmDelete">
+                                <i class="fa fa-remove mt-0"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-white btn-rounded btn-sm px-2 waves-effect waves-light">
+                                <i class="fa fa-info-circle mt-0"></i>
+                            </button>
+                        </div>
+
+                    </div>
+                    <!--/Card header-->
+
+                    <!--Card content-->
+                    <div class="card-body">
+
+                        <div class="table-responsive">
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="th-lg">Id</th>
+                                        <th class="th-lg">Name</th>
+                                        <th class="th-lg">Contact Number</th>
+                                        <th class="th-lg">Email Id</th>
+                                        <th class="th-lg">Address</th>
+                                        <th class="th-lg">Pizza</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="activitiListData in activity_instance_list">
+                                        <td>N/A</td>
+                                        <td>{{activitiListData.name}}</td>
+                                        <td>{{activitiListData.contactnum}}</td>
+                                        <td>{{activitiListData.mailid}}</td>
+                                        <td>{{activitiListData.address}}</td>
+                                        <td>{{activitiListData.pizza}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <hr class="my-0">
+
+                    </div>
+                    <!--/.Card content-->
+
+                </div>
+                <!--/.Card-->
+
+            </section>
+    </main>
+
+
+    <!-- SCRIPTS -->
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="js/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="js/mdb.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Material Design Bootstrap</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="css/mdb.min.css" rel="stylesheet">
+    <!-- Your custom styles (optional) -->
+    <link href="css/style.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Angular js -->
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+        <script type="text/javascript" src="https://code.angularjs.org/1.6.4/angular-route.min.js"></script>
+        <script type="text/javascript" src="js/app.js"></script>  
+        
+    <script type="text/javascript">
+        $(document).ready(function() {
+             $(".button-collapse").sideNav();
+        });
+    </script>
+</head>
+
+<body class="fixed-sn light-blue-skin" ng-app="serviceCRM" ng-controller="TestCRM3">
+
+    <!--Main Navigation-->
+    <header>
+
+        <!--Navbar-->
+        <nav class="navbar navbar-expand-lg navbar-dark double-nav  fixed-top scrolling-navbar">
+
+            <!-- SideNav slide-out button -->
+            <div class="float-left">
+                <a href="#" data-activates="slide-out" class="button-collapse">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+
+            <!-- Breadcrumb-->
+            <div class="breadcrumb-dn mr-auto">
+                <p>Service CRM</p>
+            </div>
+
+            <!-- Links -->
+            <ul class="nav navbar-nav nav-flex-icons ml-auto">
+                <li class="nav-item">
+                    <button type="button" class="btn btn-primary btn-rounded" style="margin-top: -1px; background-color: #4285f4">Approved</button>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link">
+                        <i class="fa fa-envelope"></i>
+                        <span class="clearfix d-none d-sm-inline-block">Contact</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link">
+                        <i class="fa fa-gear"></i>
+                        <span class="clearfix d-none d-sm-inline-block">Settings</span>
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-user"></i>
+                        <span class="clearfix d-none d-sm-inline-block">Account</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+            </ul>
+
+        </nav>
+        <!--/.Navbar-->
+
+        <!-- Sidebar navigation -->
+        <div id="slide-out" class="side-nav fixed sn-bg-4">
+            <ul class="custom-scrollbar list-unstyled">
+                <!-- Logo -->
+                <li class="logo-sn waves-effect">
+                    <div class=" text-center">
+                        <!-- <a href="#" class="pl-0">
+                            <img src="https://mdbootstrap.com/img/logo/mdb-transparent.png" class="">
+                        </a> -->
+                        <h1>MMI</h1>
+                    </div>
+                </li>
+                <!--/. Logo -->
+                <!--Search Form-->
+                <li>
+                    <form class="search-form" role="search">
+                        <div class="form-group waves-light">
+                            <input type="text" class="form-control" placeholder="Search">
+                        </div>
+                    </form>
+                </li>
+                <!--/.Search Form-->
+                <!-- Side navigation links -->
+                <li>
+                    <ul class="collapsible collapsible-accordion">
+                        <!--Process List Start -->
+                        <li id="processListActive">
+                            <a class="collapsible-header waves-effect arrow-r">
+                                <i class="fa fa-chevron-right"></i> Process List
+                                <i class="fa fa-angle-down rotate-icon"></i>
+                            </a>
+                            <div class="collapsible-body">
+                                <!--Sub Process List Start-->
+                                <ul>
+                                    <li id="{{processsList.deploymentId}}" ng-repeat="processsList in myData"><a id="{{processsList.name}}" href="#" class="waves-effect" ng-click="getActivitiList($event)">{{processsList.name}}</a></li>
+                                </ul>
+                                <!--Sub Process List End-->
+                            </div>
+                        </li>
+                        <!--Process List End-->
+                        <!--Activity List Start-->
+                        <li id="ActivitiListActive">
+                            <a class="collapsible-header waves-effect arrow-r">
+                                <i class="fa fa-hand-pointer-o"></i> Activity List
+                                <i class="fa fa-angle-down rotate-icon"></i>
+                            </a>
+                            <div class="collapsible-body">
+                                <!--Sub Activity List Start-->
+                                <ul>
+                                    <li id="{{activitiList.user_task_id}}" ng-repeat="activitiList in activitiData"><a id="{{activitiList.form_path}}" href="#" class="waves-effect" ng-click="loadActivityContents($event)">{{activitiList.task_name}}</a></li>
+                                </ul>
+                                <!--Sub Activity List End-->
+                            </div>
+                        </li>
+                         <!--Activity List End-->
+                        <li>
+                            <a class="collapsible-header waves-effect arrow-r">
+                                <i class="fa fa-eye"></i> About
+                                <i class="fa fa-angle-down rotate-icon"></i>
+                            </a>
+                            <div class="collapsible-body">
+                                <ul>
+                                    <li>
+                                        <a href="#" class="waves-effect">Introduction</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="waves-effect">Monthly meetings</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <a class="collapsible-header waves-effect arrow-r">
+                                <i class="fa fa-envelope-o"></i> Contact me
+                                <i class="fa fa-angle-down rotate-icon"></i>
+                            </a>
+                            <div class="collapsible-body">
+                                <ul>
+                                    <li>
+                                        <a href="#" class="waves-effect">FAQ</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="waves-effect">Write a message</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="waves-effect">FAQ</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="waves-effect">Write a message</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="waves-effect">FAQ</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="waves-effect">Write a message</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="waves-effect">FAQ</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="waves-effect">Write a message</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <!--/. Side navigation links -->
+            </ul>
+            <!-- Mask -->
+            <div class="sidenav-bg mask-strong"></div>
+        </div>
+        <!--/. Sidebar navigation -->
+    </header>
+    <!--Main Navigation-->
+    <main>
+        <section id="table_data" class="mb-5" style="display: none;">
+                <div class="card card-cascade narrower">
+                    <div class="card-body">
+
+                        <div class="table-responsive">
+
+                            <table class="table">
+                                <thead class="view  gradient-card-header  mx-4  justify-content-between align-items-center" style="background-color: #3f5c80;">
+                                    <tr>
+                                        <th class="th-lg"  ng-repeat="(key, data) in activity_instance_list[0]">{{key}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="data in activity_instance_list">
+                                        <td>
+                                            <input type="checkbox" id="checkbox{{data.id}}" ng-model="data.checked" ng-click="updateSelection($index, activity_instance_list, data); get_selected_item_data()" data-toggle="modal" data-target="#editInstanceDetails">
+                                            <label for="checkbox{{data.id}}">{{data.id}}</label>
+                                        </td>
+                                        <td ng-repeat="new_data in data" ng-hide="$first">{{new_data}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <hr class="my-0">
+                    </div>
+                </div>
+            </section>
+    </main>
+
+
+    <!--Edit user Modal -->
+<div class="modal fade" id="editInstanceDetails" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="max-width: 660px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit / Update / Confirm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+<!--                 First row-->
+                    <div class="row">
+<!--                         First column-->
+                        <div class="col-md-6">
+                            <div class="md-form">
+                                <i class="fa fa-user-secret prefix active" style="font-size: 1.7rem;"></i>
+                                <input type="text" id="form7" class="form-control" column="process_indtance_id" queryFlag="" value="{{process_instance_id}}">
+                                <label for="form7" class="active">Process Instance Id</label>
+                            </div>
+                        </div>
+<!--                         Second column-->
+                        <div class="col-md-6">
+                            <div class="md-form">
+                                <i class="fa fa-user prefix active" style="font-size: 1.7rem;"></i>
+                                <input type="text" id="form8" class="form-control" column="contact_num" queryFlag="" value="{{contact_num}}">
+                                <label for="form8" class="active">Contact Number</label>
+                            </div>
+                        </div>
+                    </div>
+<!--                    /.First row-->
+                    
+<!--                    Second row-->
+                    <div class="row">
+<!--                         First column-->
+                       <div class="col-md-6">
+                            <div class="md-form">
+                                <i class="fa fa-user prefix active" style="font-size: 1.7rem;"></i>
+                                <input type="text" id="form9" class="form-control" column="address" queryFlag="" value="{{address}}">
+                                <label for="form9" class="active">Address</label>
+                            </div>
+                        </div>
+<!--                         Second column-->
+                        <div class="col-md-6">
+                            <div class="md-form">
+                                <i class="fa fa-envelope prefix active" style="font-size: 1.5rem;"></i>
+                                <input type="text" id="form10" column="pizza_type" queryFlag="" value="{{pizza_type}}">
+                                <label for="form10" class="active">Pizza Type</label>
+                            </div>
+                        </div>
+                    </div>
+<!--                    /.Second row-->
+                    
+<!--                    Third row-->
+                    <div class="row">
+<!--                         First column-->
+                       <div class="col-md-6">
+                            <div class="md-form">
+                                <i class="fa fa-user prefix active" style="font-size: 1.7rem;"></i>
+                                <input type="text" id="form11" class="form-control" column="name" queryFlag="" value="{{name}}">
+                                <label for="form11" class="active">User name</label>
+                            </div>
+                        </div>
+<!--                         Second column-->
+                        <div class="col-md-6">
+                            <div class="md-form">
+                                <i class="fa fa-lock prefix active" style="font-size: 1.7rem;"></i>
+                                <input type="email" id="form12" class="form-control validate" column="email_id" queryFlag="" value="{{email_id}}">
+                                <label for="form12" data-error="wrong" data-success="right" class="active">Email Id</label>
+                            </div>
+                        </div>
+                    </div>
+<!--                    /.Third row-->
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+    
+    <!-- SCRIPTS -->
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="js/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="js/mdb.min.js"></script>
+</body>
+
+</html>

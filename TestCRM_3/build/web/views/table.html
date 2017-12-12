@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+         <section id="table_data" class="mb-5">
+                <div class="card card-cascade narrower">
+                    <div class="card-body">
+                        <div class="table-responsive table-wrapper-2">
+                            <table class="table">
+                                <thead class="view  gradient-card-header  mx-4  justify-content-between align-items-center" style="background-color: #3f5c80;">
+                                    <tr>
+                                        <th class="th-lg"  ng-repeat="(key, data) in list">{{key}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="(key, data) in list_data">
+                                        <td ng-repeat="new_data in data">{{new_data}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <hr class="my-0">
+                    </div>
+                </div>
+            </section>
+    </body>
+</html>

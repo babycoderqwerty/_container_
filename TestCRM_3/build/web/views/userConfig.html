@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div>
+            <span class="table-add float-right mb-3 mr-2"><a class="text-success" data-toggle="modal" data-target="#createUser"><i class="fa fa-plus fa-2x" aria-hidden="true"></i>Add</a></span>
+            <span class="table-add float-right mb-3 mr-4"><a class="text-success" data-toggle="modal" data-target="#editUser" ng-click="get_selected_item_data()"><i class="fa fa-pencil fa-2x" aria-hidden="true"></i></i>Edit</a></span>
+        </div>      
+        <section id="table_data" class="mb-5">
+                <div class="card card-cascade narrower">
+                    <div class="card-body">
+                        <div class="table-responsive table-wrapper-2">
+                            <table class="table">
+                                <thead class="view  gradient-card-header  mx-4  justify-content-between align-items-center" style="background-color: #3f5c80;">
+                                    <tr>
+                                        <th class="th-lg">#</th>
+                                        <th class="th-lg"  ng-repeat="(key, data) in list">{{key}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="(key, data) in list_data">
+                                        <td>
+                                            <input type="checkbox" id="checkbox{{data.id_}}" ng-model="data.checked" ng-click="updateSelection($index, list_data, data)">
+                                            <label for="checkbox{{data.id_}}"></label>
+                                        </td>
+                                        <td ng-repeat="new_data in data">{{new_data}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <hr class="my-0">
+                    </div>
+                </div>
+            </section>
+        
+<!-- Create user Modal -->
+<div class="modal fade" id="createUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="max-width: 660px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add New User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                 <!--First row-->
+                    <div class="row">
+                        <!-- First column-->
+                        <div class="col-md-6">
+                            <div class="md-form">
+                                <i class="fa fa-user-secret prefix" style="font-size: 1.7rem;"></i>
+                                <input type="text" id="form1" class="form-control" column="user_id_" queryFlag="">
+                                <label for="form1" class="">User ID</label>
+                            </div>
+                        </div>
+                        <!-- Second column-->
+                        <div class="col-md-6">
+                            <div class="md-form">
+                                <i class="fa fa-user prefix" style="font-size: 1.7rem;"></i>
+                                <input type="text" id="form2" class="form-control" column="first_" queryFlag="">
+                                <label for="form2" class="">First Name</label>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/.First row-->
+                    
+                    <!--Second row-->
+                    <div class="row">
+                        <!-- First column-->
+                       <div class="col-md-6">
+                            <div class="md-form">
+                                <i class="fa fa-user prefix" style="font-size: 1.7rem;"></i>
+                                <input type="text" id="form3" class="form-control" column="last_" queryFlag="">
+                                <label for="form3" class="">Last Name</label>
+                            </div>
+                        </div>
+                        <!-- Second column-->
+                        <div class="col-md-6">
+                            <div class="md-form">
+                                <i class="fa fa-envelope prefix" style="font-size: 1.5rem;"></i>
+                                <input type="email" id="form4" class="form-control validate" column="email_" queryFlag="">
+                                <label for="form4" data-error="wrong" data-success="right">Type your email</label>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/.Second row-->
+                    
+                    <!--Third row-->
+                    <div class="row">
+                        <!-- First column-->
+                       <div class="col-md-6">
+                            <div class="md-form">
+                                <i class="fa fa-user prefix" style="font-size: 1.7rem;"></i>
+                                <input type="text" id="form5" class="form-control" column="role_" queryFlag="">
+                                <label for="form5" class="">Type Role</label>
+                            </div>
+                        </div>
+                        <!-- Second column-->
+                        <div class="col-md-6">
+                            <div class="md-form">
+                                <i class="fa fa-lock prefix" style="font-size: 1.7rem;"></i>
+                                <input type="password" id="form6" class="form-control validate" column="pwd_" queryFlag="">
+                                <label for="form6" data-error="wrong" data-success="right">Type password</label>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/.Third row-->
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" ng-click="createUser()" data-dismiss="modal">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Edit user Modal -->
+<div class="modal fade" id="editUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="max-width: 660px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit / Update</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+<!--                 First row-->
+                    <div class="row">
+<!--                         First column-->
+                        <div class="col-md-6">
+                            <div class="md-form">
+                                <i class="fa fa-user-secret prefix active" style="font-size: 1.7rem;"></i>
+                                <input type="text" id="form7" class="form-control" column="user_id_" queryFlag="" value="{{user_id}}">
+                                <label for="form7" class="active">User ID</label>
+                            </div>
+                        </div>
+<!--                         Second column-->
+                        <div class="col-md-6">
+                            <div class="md-form">
+                                <i class="fa fa-user prefix active" style="font-size: 1.7rem;"></i>
+                                <input type="text" id="form8" class="form-control" column="first_" queryFlag="" value="{{first}}">
+                                <label for="form8" class="active">First Name</label>
+                            </div>
+                        </div>
+                    </div>
+<!--                    /.First row-->
+                    
+<!--                    Second row-->
+                    <div class="row">
+<!--                         First column-->
+                       <div class="col-md-6">
+                            <div class="md-form">
+                                <i class="fa fa-user prefix active" style="font-size: 1.7rem;"></i>
+                                <input type="text" id="form9" class="form-control" column="last_" queryFlag="" value="{{last}}">
+                                <label for="form9" class="active">Last Name</label>
+                            </div>
+                        </div>
+<!--                         Second column-->
+                        <div class="col-md-6">
+                            <div class="md-form">
+                                <i class="fa fa-envelope prefix active" style="font-size: 1.5rem;"></i>
+                                <input type="email" id="form10" class="form-control validate" column="email_" queryFlag="" value="{{email}}">
+                                <label for="form10" data-error="wrong" data-success="right" class="active">Type your email</label>
+                            </div>
+                        </div>
+                    </div>
+<!--                    /.Second row-->
+                    
+<!--                    Third row-->
+                    <div class="row">
+<!--                         First column-->
+                       <div class="col-md-6">
+                            <div class="md-form">
+                                <i class="fa fa-user prefix active" style="font-size: 1.7rem;"></i>
+                                <input type="text" id="form11" class="form-control" column="role_" queryFlag="" value="{{role}}">
+                                <label for="form11" class="active">Type Role</label>
+                            </div>
+                        </div>
+<!--                         Second column-->
+                        <div class="col-md-6">
+                            <div class="md-form">
+                                <i class="fa fa-lock prefix active" style="font-size: 1.7rem;"></i>
+                                <input type="text" id="form12" class="form-control validate" column="pwd_" queryFlag="" value="{{pwd}}">
+                                <label for="form12" data-error="wrong" data-success="right" class="active">Type password</label>
+                            </div>
+                        </div>
+                    </div>
+<!--                    /.Third row-->
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+    </body>
+</html>
